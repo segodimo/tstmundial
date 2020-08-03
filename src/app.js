@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 //SETTINGS
-app.set('port', process.env.PORT || 5000);
+app.set('port', process.env.PORT || 3000);
 
 
 //MIDDLEWARES

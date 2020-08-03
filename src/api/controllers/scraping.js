@@ -6,8 +6,11 @@ function linloop(num){
 	for (var i = 0; i  < num; i++) {
 		console.log('\n')
 	}
-	console.log('AWAWAWAWAWAWAWAWAWAWAWAWAW'); 
+
+	console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 }
+
+var cnt = 0;
 
 const scraping = (req, res) => {
 
@@ -15,33 +18,23 @@ const scraping = (req, res) => {
 	let rbod = req.body; 
 	let search = rbod.search;
 	let limit = rbod.limit;
-	// console.log('search '+search+' - '+' limit '+limit)
+	console.log('SEARCH ('+search+') - LIMIT ('+limit+')')
 
-
-	//*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// return res.json(
-	// 	// {
-	// 	// 	"name": "Cadeado Mesmo Segredo 25mm Zamac Stam ",
-	// 	// 	"link": "https://produto.mercadolivre.com.br/MLB-1051471391-cadeadomesmo-segredo-25mmzamac-stam-_JM?searchVariation=32155276831#searchVariation=32155276831&position=1&type=item&tracking_id=f30403d1-95ae-40c2-8b98-07a75f31d46c",
-	// 	// 	"price": 22.80,
-	// 	// 	"store": "O Construtor",
-	// 	// 	"state": null
-	// 	// }
-	// 	{ okokokokoko: true }
-	// );
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// let brand = 'fones';
-	
-	 // request("https://www.mercadolivre.com.br/", function (error, response, body) {
-	 request("https://lista.mercadolivre.com.br/"+search, function (error, response, body) {
+	// FUNÇÃO LOOP
+	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+	// request("https://www.mercadolivre.com.br/", function (error, response, body) {
+	request(`https://lista.mercadolivre.com.br/${search}]`, function (error, response, body) {
 
 		if (error) {
+			console.log("ERROR", error);
 			res.send(response.statusCode);
 		}
 
 		var dados = [];
 		var $ = cheerio.load(body);
 		$('#searchResults li.results-item').each(function (index){
+			cnt++
 			dados[index] = {};
 			dados[index]['name'] = $(this).find('.list-view-item-title').text().trim();
 			dados[index]['link'] = $(this).find('.item__js-link').attr('href');
@@ -54,11 +47,13 @@ const scraping = (req, res) => {
 			// dados[index]['shipping'] = $(this).find('div.item__shipping > p').text().trim();
 			// dados[index]['link_pag'] = $(this).find('.andes-pagination__button--next').text();
 			// console.log(dados);
-		})
+		});
 
+		console.log("# DE PRODUTOS =", cnt)
 		// res.json({asasasas: "dfdfdfdfdf"});
+		console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 		return res.json(dados);
-	})
+	});
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 }
