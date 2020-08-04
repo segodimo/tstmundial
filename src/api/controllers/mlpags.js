@@ -13,57 +13,12 @@ const mlpags = async (req, res) => {
 
 	linloop(100)
 
-
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// FUNÇÃO LOOP
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// // request("https://www.mercadolivre.com.br/", function (error, response, body) {
-	// request(`https://lista.mercadolivre.com.br/${search}]`, function (error, response, body) {
-
-	// 	if (error) {
-	// 		console.log("ERROR", error);
-	// 		res.send(response.statusCode);
-	// 	}
-
-	// 	var dados = [];
-	// 	var $ = cheerio.load(body);
-	// 	$('#searchResults li.results-item').each(function (index){
-	// 		cnt++
-	// 		dados[index] = {};
-	// 		dados[index]['name'] = $(this).find('.list-view-item-title').text().trim();
-	// 		dados[index]['link'] = $(this).find('.item__js-link').attr('href');
-	// 		let decimal = $(this).find('div.item__price > span.price__decimals').text().trim();
-	// 		let price = $(this).find('div.item__price > span.price__fraction').text().trim();
-	// 		dados[index]['price'] = price.replace('.', '') + (decimal != '' ? '.' + decimal : '.00');
-	// 		dados[index]['store'] = $(this).find('.item__brand-link').text().trim();
-	// 		dados[index]['state'] = $(this).find('.item__condition').text().trim();
-	// 		// dados[index]['productML'] = $(this).find('div.rowItem').attr('id');
-	// 		// dados[index]['shipping'] = $(this).find('div.item__shipping > p').text().trim();
-	// 		// dados[index]['link_pag'] = $(this).find('.andes-pagination__button--next').text();
-	// 		// console.log(dados);
-	// 	});
-
-	// 	console.log("# DE PRODUTOS =", cnt)
-	// 	console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
-
-
-	// 	// return res.json(dados);
-	// });
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-	// requestBody(`https://lista.mercadolivre.com.br/${search}]`);
-
-	// request(`https://lista.mercadolivre.com.br/${search}]`, function (error, response, body) {
-
-
-	// });
-
-
+	/*======================================================*/
+	//FUNCTION FETCHPAGE
 	async function fetchPage(url) {
-		let cnt = 0;
-		let nextPaglink = '';
 		let dados = {};
-	    await request(url, function (error, response, body) {
+		let nextPaglink = '';
+		await request(url, function (error, response, body) {
 
 			if (error) {
 				console.log("ERROR", error);
@@ -74,7 +29,6 @@ const mlpags = async (req, res) => {
 
 			//ACUMULA INFORMAÇÕES DOS DADOS
 			$('#searchResults li.results-item').each(function (index){
-				cnt++
 				dados[index] = {};
 				dados[index]['name'] = $(this).find('.list-view-item-title').text().trim();
 				dados[index]['link'] = $(this).find('.item__js-link').attr('href');
@@ -93,25 +47,41 @@ const mlpags = async (req, res) => {
 			nextPaglink = $('.andes-pagination__button--next').find('a').attr('href');
 			// console.log('nextPaglink: ', nextPaglink);
 			// console.log("# DE PRODUTOS =", cnt)
-			// res.json({asasasas: "dfdfdfdfdf"});
-			// console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 		});
-		return [{noitns:cnt,nextPag:nextPaglink},{dds:dados}];
+		return [{nextPag:nextPaglink},{dds:dados}];
+	}
+
+	function joinObj(obj1,obj2){
+		var num = 0; 
+		let newobj = []; 
+		Object.entries(obj1).forEach(([key1, val1]) => {
+			// console.log(key + ' ' + val);
+			newobj[num] = val1;
+			num++; 
+		});
+		Object.entries(obj2).forEach(([key1, val2]) => {
+			// console.log(key + ' ' + val);
+			newobj[num] = val2;
+			num++; 
+		});
+		// console.log(newobj)
+		// console.log(num)
+		// console.log('# DE PRODUTOS newobj = '+((Object.keys(newobj).length)))
+		return newobj;
 	}
 
 	/*======================================================*/
-	
+	//INICIO
+
 	let rbod = req.body; 
 	let search = rbod.search;
 	let limit = rbod.limit;
-	var nvoLink = '';
-	var noQuan = 0;
-	var dds = [];
-	var ddsData = [];
-	var ddsDataPag = [];
-	var ddsMerge = [];
+	let nvoLink = '';
+	let noQuan = 0;
+	let dds = [];
+	let ddsJoin = [];
 	console.log('SEARCH ('+search+') - LIMIT ('+limit+')')
-
+	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 	let url = `https://lista.mercadolivre.com.br/${search}`;
 	// let url = `https://lista.mercadolivre.com.br/mdr7506#D[A:mdr7506]`;
@@ -120,126 +90,111 @@ const mlpags = async (req, res) => {
 	dds = await fetchPage(url);
 	// console.log(dds)
 
-	noQuan = dds[0].noitns;
+	noQuan = (Object.keys(dds[1].dds).length);
 	console.log('# DE PRODUTOS = '+noQuan+' limit = '+limit)
 
 	nvoLink = dds[0].nextPag;
 	console.log('Link: '+nvoLink)
 
-	var nv_dds = []; 
+	let nv_dds = []; 
 	let pass = true;
 
-	ddsMerge = dds[1].dds;
+	ddsJoin = dds[1].dds;
+	console.log('# DE PRODUTOS ddsJoin 1 = '+((Object.keys(ddsJoin).length)))
+	// console.log(ddsJoin)
+	// console.log(ddsJoin[0])
+	// linloop(20)
 
-	// ddsData = [...ddsData, ...dds[1].dds];
+	// // ddsJoin = {...ddsJoin, ...dds[1].dds };
+
+	// console.log(ddsJoin,'ddsJoin');
+
+
+	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+	//LOOP SIGUIENTES PAGINAS
 
 	while (pass) {
 
+		console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
+
 		if(nvoLink && (noQuan < limit)){
 			nv_dds = await fetchPage(nvoLink);
+			// console.log(nv_dds[1].dds[0])
 
-			noQuan += nv_dds[0].noitns;
+			noQuan += (Object.keys(nv_dds[1].dds).length);
 			console.log('# DE PRODUTOS = '+noQuan+' limit = '+limit)
 
 			nvoLink = nv_dds[0].nextPag;
 			console.log('Link: '+nvoLink)
 
-			ddsMergePag = nv_dds[1].dds
+			ddsJoin = joinObj(ddsJoin,nv_dds[1].dds);
+			console.log('# DE PRODUTOS ddsJoin = '+((Object.keys(ddsJoin).length)))
 
 			// console.log(typeof(nv_dds[1].dds))
-			// console.log(typeof(ddsDataPag))
-			// ddsMerge = [nv_dds[1].dds, ...ddsMerge];
+			// ddsJoin = [nv_dds[1].dds, ...ddsJoin];
+			// let ojbdds = nv_dds[1].dds;
 
-			ddsMerge = {...ddsMerge, ...nv_dds[1].dds };
-			
+			// console.log('# DE PRODUTOS ddsJoin = '+((Object.keys(ddsJoin).length)))
+			// console.log('# DE PRODUTOS ojbdds = '+((Object.keys(ojbdds).length)))
+
+			// let ddschingones = {...ojbdds, ...ddsJoin};
+			// console.log('# DE PRODUTOS ddschingones = '+((Object.keys(ddschingones).length)))
+			// ddsJoin += nv_dds[1].dds;
+			// console.log(ddsJoin)
+
+
+			// ddsJoin = {...ddsJoin, ...nv_dds[1].dds };
+			// ddsJoin = [...nv_dds[1].dds];
+			// ddsJoin = Object.assign(ddsJoin, nv_dds[1].dds);
+			// console.log(ddsJoin)
+
 		}else{
 			pass = false
 		}
 	};
+	// /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+	// //console.log(ddsJoin)
+	// console.log('length ddsJoin: '+ Object.keys(ddsJoin).length);
 
-	// console.log(ddsMerge)
 
-
-
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-	// console.log('# DE PRODUTOS = '+dds[0].noitns)
-	// console.log('Link: '+dds[0].nextPag)
-	// console.log(dds[1].dds)
-
-	// if (noQuan < limit){
-	// 	console.log('# DE PRODUTOS = '+dds[0].noitns)
-	// 	console.log('Link: '+dds[0].nextPag)
-	// 	if(nvoLink){
-
-	// 	}else{
-
-	// 	}
-	// }else{
-
+	// for (var key in ddsJoin){
+	//    console.log(`key: ${key}, value: ${ddsJoin[key]}`);
 	// }
 
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// do {
-	//    i += 1;
-	//    resultado += i + ' ';
-	// } while (i < 5);
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+	// ddsJoin = Object.keys(dds[1].dds).map((key, index) => {
+	//   // console.log(key)
+	//   // console.log(dds[1].dds[key])
+	//   // console.log('-----------------------------------------')
+	//   return({
+	//    key: dds[1].dds[key],
+	//   })
+	// });
 
-	// if((noQuan < limit) && (typeof(nvoLink) !== 'undefined'  )){
-	// }
+	// console.log((ddsJoin))
+	console.log('# DE PRODUTOS ddsJoin final = '+((Object.keys(ddsJoin).length)))
+	// console.log(typeof(ddsJoin))
+
+	console.log(ddsJoin[0])
+
+
+	var ddFinal = [{search:search,limit:limit}];
+	for (var i = 1; i <= limit; i++) {
+		// console.log(ddsJoin[i]);
+		ddFinal[i] = ddsJoin[i];
+	}
+
+	console.log('# DE PRODUTOS ddFinal final = '+((Object.keys(ddFinal).length)))
+
+	console.log(ddFinal[0])
+
+	// console.log((ddFinal))
+
+	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
-
-	/*======================================================*/
-
-	// var $ = cheerio.load(body);
-	// Coleta o numero de itens por pagina
-	// compara como o limite
-	// Check si tem ultima pagina ou não
-
-
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// const array1 = ["Vijendra","Singh"];
-	// const array2 = ["Singh", "Shakya"];
-	// const array3 = [...array1, ...array2];
+	// return res.json({mlpag: "okokok"});
+	return res.json(ddFinal);
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// var promises = [];
-
-	// for (var i = 0; i < sub; i++) {
-	// 	const promise = request("https://api.nasa.gov/planetary/apod?date=" + subtractDate(enddate, i) + "&api_key=DEMO_KEY");
-	// 	promises.push(promise);
-	// }
-
-	// const array = await Promise.all(promises);
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// var parar = 0;
-	// async function main() {
-	// 	try {
-	// 		if (parar <= 5) {
-	// 			console.log(`Ta indo ${parar}\n`);
-
-	// 			parar++
-	// 		} else {
-	// 			console.log('Não existem novas urls disponíveis.\n')
-	// 		}
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// }
-
-	// interval(async () => {
-	// 	await main()
-	// }, 1000)
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-
-
-
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	
-	return res.json({mlpag: "okokok"});
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
 }
 
 module.exports = {mlpags}
