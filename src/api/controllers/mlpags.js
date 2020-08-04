@@ -81,6 +81,7 @@ const mlpags = async (req, res) => {
 	let dds = [];
 	let ddsJoin = [];
 	console.log('SEARCH ('+search+') - LIMIT ('+limit+')')
+	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 	let url = `https://lista.mercadolivre.com.br/${search}`;
@@ -103,12 +104,6 @@ const mlpags = async (req, res) => {
 	console.log('# DE PRODUTOS ddsJoin 1 = '+((Object.keys(ddsJoin).length)))
 	// console.log(ddsJoin)
 	// console.log(ddsJoin[0])
-	// linloop(20)
-
-	// // ddsJoin = {...ddsJoin, ...dds[1].dds };
-
-	// console.log(ddsJoin,'ddsJoin');
-
 
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	//LOOP SIGUIENTES PAGINAS
@@ -130,51 +125,19 @@ const mlpags = async (req, res) => {
 			ddsJoin = joinObj(ddsJoin,nv_dds[1].dds);
 			console.log('# DE PRODUTOS ddsJoin = '+((Object.keys(ddsJoin).length)))
 
-			// console.log(typeof(nv_dds[1].dds))
-			// ddsJoin = [nv_dds[1].dds, ...ddsJoin];
-			// let ojbdds = nv_dds[1].dds;
-
-			// console.log('# DE PRODUTOS ddsJoin = '+((Object.keys(ddsJoin).length)))
-			// console.log('# DE PRODUTOS ojbdds = '+((Object.keys(ojbdds).length)))
-
-			// let ddschingones = {...ojbdds, ...ddsJoin};
-			// console.log('# DE PRODUTOS ddschingones = '+((Object.keys(ddschingones).length)))
-			// ddsJoin += nv_dds[1].dds;
-			// console.log(ddsJoin)
-
-
-			// ddsJoin = {...ddsJoin, ...nv_dds[1].dds };
-			// ddsJoin = [...nv_dds[1].dds];
-			// ddsJoin = Object.assign(ddsJoin, nv_dds[1].dds);
-			// console.log(ddsJoin)
-
 		}else{
 			pass = false
 		}
 	};
-	// /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	// //console.log(ddsJoin)
-	// console.log('length ddsJoin: '+ Object.keys(ddsJoin).length);
 
-
-	// for (var key in ddsJoin){
-	//    console.log(`key: ${key}, value: ${ddsJoin[key]}`);
-	// }
-
-	// ddsJoin = Object.keys(dds[1].dds).map((key, index) => {
-	//   // console.log(key)
-	//   // console.log(dds[1].dds[key])
-	//   // console.log('-----------------------------------------')
-	//   return({
-	//    key: dds[1].dds[key],
-	//   })
-	// });
+	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+	// 
 
 	// console.log((ddsJoin))
-	console.log('# DE PRODUTOS ddsJoin final = '+((Object.keys(ddsJoin).length)))
+	// console.log('# DE PRODUTOS ddsJoin final = '+((Object.keys(ddsJoin).length)))
 	// console.log(typeof(ddsJoin))
 
-	console.log(ddsJoin[0])
+	// console.log(ddsJoin[0])
 
 
 	var ddFinal = [{search:search,limit:limit}];
@@ -185,7 +148,7 @@ const mlpags = async (req, res) => {
 
 	console.log('# DE PRODUTOS ddFinal final = '+((Object.keys(ddFinal).length)))
 
-	console.log(ddFinal[0])
+	// console.log(ddFinal[0])
 
 	// console.log((ddFinal))
 
