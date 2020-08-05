@@ -48,16 +48,21 @@ curl -H "Content-Type: application/json" -X POST --data '{"search": "cadeado"}' 
 ```
 __tests__
 │
-└───server.spec.js  # TDD Testes Iniciais
+└───app.spec.js ...............# TDD app
+└───mlpags.spec.js ...............# TDD mplpags
+└───mlthread.spec.js ...............# TDD mlthreads
 src
-└───app.js          # Configurações, Middlewares, Classe app, (Porta **3000** ou .env, usa morgan)
-└───server.js       # Server para iniciar o app porta 
+└───app.js ...............# Configurações, Middlewares, Classe app, (Porta **3000** ou .env, usa morgan)
+└───server.js ...............# Server para iniciar o app porta 
 └───api             
-  └───controllers   # Funções da controllers do express route
-    └───mlpags		# **Endpoint** Recebe, via POST, o JSON: Ex. {"search": "cadeado", "limit": 10 }
-    └───scraping	# **Endpoin+** Recebe, via POST, o JSON: Ex. {"search": "mdr7506", "limit": 60 }
-└───routes          # Definição de rotas express
-  └───index			# routes.post('/mlpags' para mlpags, routes.post('/search'... para scraping, e .get('/'... para index, 
+  └───controllers ...............# Funções da controllers do express route
+    └───mlpags ...............# **Endpoint** Recebe, via POST, o JSON: Ex. {"search": "cadeado" }
+    └───scraping ...............# **Endpoin+** Recebe, via POST, o JSON: Ex. {"search": "mdr7506", "limit": 60 }
+    └───mlthread ...............# **Endpoint** Recebe, via POST, o JSON: Ex. {"search": "cadeado", "limit": 10 }
+└───config ...............# Middlewares
+└───erros ...............# Erros ValidationError
+└───routes ...............# Definição de rotas express
+  └───index ...............# routes.post('/mlpags' para mlpags, routes.post('/search'... para scraping, e .get('/'... para index, 
 ```
 
 
