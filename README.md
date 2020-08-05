@@ -10,9 +10,9 @@
 
 - Use **yarn test** para iniciar os testes
 
-- Pode usar o endpoint **/mlpags** que recebe um JSON (´´´{"search": "mdr7506", "limit": 10}´´´), via POST, ele devolve 100 produtos sobre cadeado
+- Pode usar o endpoint **/mlpags** que recebe um JSON por Ex. (´´´{"search": "mdr7506", "limit": 10}´´´), via POST, e ele devolve o numero limit de produtos sobre cadeado
 
-- Pode usar o endpoint **/scraping** que recebe um JSON (´´´{"search": "cadeado"}´´´),, via POST.  ele devolve os produtos da primeira página
+- Pode usar o endpoint **/scraping** que recebe um JSON por Ex. (´´´{"search": "cadeado"}´´´),, via POST. e ele devolve os produtos da primeira página
 
 
 ## Como alternativa pode usar **Curl** para testar
