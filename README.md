@@ -4,6 +4,9 @@
 
 - Use **yarn install** para adicionar as dependências
 
+
+- Use **yarn start** para iniciar
+
 - Use **yarn dev** para iniciar o modo de desenvolvimento
 
 - Use **yarn secure-mode** para iniciar os testes (jest --watch)
