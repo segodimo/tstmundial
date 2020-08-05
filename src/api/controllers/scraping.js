@@ -17,8 +17,7 @@ const scraping = (req, res) => {
 	linloop(100)
 	let rbod = req.body; 
 	let search = rbod.search;
-	let limit = rbod.limit;
-	console.log('SEARCH ('+search+') - LIMIT ('+limit+')')
+	console.log('SEARCH ('+search+')')
 
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	// FUNÇÃO LOOP
@@ -52,7 +51,7 @@ const scraping = (req, res) => {
 		console.log("# DE PRODUTOS =", cnt)
 		// res.json({asasasas: "dfdfdfdfdf"});
 		console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
-		return res.json(dados);
+		return res.status(201).json(dados);
 	});
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

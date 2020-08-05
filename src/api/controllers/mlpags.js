@@ -4,14 +4,23 @@ const interval = require('interval-promise');
 
 
 const mlpags = async (req, res) => {
+	if (!req.body.search){
+		app.log.debug('O JSON tem que ter o dado search');
+		return res.status(400).json({ error: 'O JSON tem que ter o dado search'});
+	}
 
+	if (!req.body.limit){
+		app.log.debug('O JSON tem que ter o dado limit');
+		return res.status(400).json({ error: 'O JSON tem que ter o dado limit'});
+	}
+	/*======================================================*/
 	function linloop(num){
 		for (var i = 0; i  < num; i++) {
-			console.log('\n')
+			//console.log('\n')
 		}
 	}
 
-	linloop(100)
+	// linloop(100)
 
 	/*======================================================*/
 	//FUNCTION FETCHPAGE
@@ -21,7 +30,7 @@ const mlpags = async (req, res) => {
 		await request(url, function (error, response, body) {
 
 			if (error) {
-				console.log("ERROR", error);
+				//console.log("ERROR", error);
 				res.send(response.statusCode);
 			}
 
@@ -51,6 +60,8 @@ const mlpags = async (req, res) => {
 		return [{nextPag:nextPaglink},{dds:dados}];
 	}
 
+	/*======================================================*/
+	//JOIN OBJETOS
 	function joinObj(obj1,obj2){
 		var num = 0; 
 		let newobj = []; 
@@ -80,10 +91,10 @@ const mlpags = async (req, res) => {
 	let noQuan = 0;
 	let dds = [];
 	let ddsJoin = [];
-	console.log('SEARCH ('+search+') - LIMIT ('+limit+')')
+	//console.log('SEARCH ('+search+') - LIMIT ('+limit+')')
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
+	//console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 	let url = `https://lista.mercadolivre.com.br/${search}`;
 	// let url = `https://lista.mercadolivre.com.br/mdr7506#D[A:mdr7506]`;
 	// let url = `https://eletronicos.mercadolivre.com.br/audio-fones-ouvido/sony/mdr7506_Desde_49`;
@@ -92,16 +103,16 @@ const mlpags = async (req, res) => {
 	// console.log(dds)
 
 	noQuan = (Object.keys(dds[1].dds).length);
-	console.log('# DE PRODUTOS = '+noQuan+' limit = '+limit)
+	//console.log('# DE PRODUTOS = '+noQuan+' limit = '+limit)
 
 	nvoLink = dds[0].nextPag;
-	console.log('Link: '+nvoLink)
+	//console.log('Link: '+nvoLink)
 
 	let nv_dds = []; 
 	let pass = true;
 
 	ddsJoin = dds[1].dds;
-	console.log('# DE PRODUTOS ddsJoin 1 = '+((Object.keys(ddsJoin).length)))
+	//console.log('# DE PRODUTOS ddsJoin 1 = '+((Object.keys(ddsJoin).length)))
 	// console.log(ddsJoin)
 	// console.log(ddsJoin[0])
 
@@ -110,20 +121,20 @@ const mlpags = async (req, res) => {
 
 	while (pass) {
 
-		console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
+		//console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 
 		if(nvoLink && (noQuan < limit)){
 			nv_dds = await fetchPage(nvoLink);
 			// console.log(nv_dds[1].dds[0])
 
 			noQuan += (Object.keys(nv_dds[1].dds).length);
-			console.log('# DE PRODUTOS = '+noQuan+' limit = '+limit)
+			//console.log('# DE PRODUTOS = '+noQuan+' limit = '+limit)
 
 			nvoLink = nv_dds[0].nextPag;
-			console.log('Link: '+nvoLink)
+			//console.log('Link: '+nvoLink)
 
 			ddsJoin = joinObj(ddsJoin,nv_dds[1].dds);
-			console.log('# DE PRODUTOS ddsJoin = '+((Object.keys(ddsJoin).length)))
+			//console.log('# DE PRODUTOS ddsJoin = '+((Object.keys(ddsJoin).length)))
 
 		}else{
 			pass = false
@@ -146,17 +157,17 @@ const mlpags = async (req, res) => {
 		ddFinal[i] = ddsJoin[i];
 	}
 
-	console.log('# DE PRODUTOS ddFinal final = '+((Object.keys(ddFinal).length)))
+	//console.log('# DE PRODUTOS ddFinal final = '+((Object.keys(ddFinal).length)))
 
 	// console.log(ddFinal[0])
 
 	// console.log((ddFinal))
 
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
+	//console.log('/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/'); 
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 	// return res.json({mlpag: "okokok"});
-	return res.json(ddFinal);
+	return res.status(201).json(ddFinal);
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 }
 
