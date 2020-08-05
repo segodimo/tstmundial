@@ -30,17 +30,17 @@ curl -H "Content-Type: application/json" -X POST --data '{"search": "cadeado"}' 
 
 - Foi a minha primeira vez em usar ferramentas de Sraping e Crowling para JavaScript; eu já tinha usado o Python então eu já tinha uma ideia de como funcionam na teorìa as técnicas para raspagem de dados.
 
-- Estudando na rede para fazer a escolha da ferramenta certa sobre a raspagem, segundo o artigo [Advanced Web Scraping Tactics link](https://www.pluralsight.com/guides/advanced-web-scraping-tactics-python-playbook); Eu reparei que a primeira coisa a se fazer para obter informaçãoo seria procurar a API do Mercado Livre (ML), então achei a (API do ML link)[https://developers.mercadolivre.com.br/pt_br/api-docs-pt-br], que seria o jeito mais obvio de obter as informações, e **essa seria a primeira solução**.
+- Estudando na rede para fazer a escolha da ferramenta certa sobre a raspagem, segundo o artigo [Advanced Web Scraping Tactics link](https://www.pluralsight.com/guides/advanced-web-scraping-tactics-python-playbook); Eu reparei que a primeira coisa a se fazer para obter informação seria procurar a API do Mercado Livre (ML), então achei a (API do ML link)[https://developers.mercadolivre.com.br/pt_br/api-docs-pt-br], que seria o jeito mais obvio de obter as informações, e **essa seria a primeira solução**.
 
 - Supondo que **não temos um API disponivel**, analizei as requisições do site e o funcionamento por ex. as urls, como funcionam os links dos botões, por ex o botão da seguinte página.
 
-- Como ML funciona de um jeito bem simples com requisições, minha escolha da ferramenta certa foi o cheerio (got, jsdom, puppeteer, dramaturgo) por facilidade e a ampla documentação. 
+- Como ML funciona de um jeito bem simples com requisições, minha escolha da ferramenta certa foi o cheerio entre outros (got, jsdom, puppeteer, dramaturgo) por simples e útil no propósito e a ampla documentação. 
 
 - Como alternativas para coletar vários itens em várias páginas do ML atè completar o número de itens da requisição,  eu pensei em duas soluções das quais eu só implementei a primeira:  
 
 1. Capturar os itens da primeira página: e **coletar o link da página siguiente**; em seguida entra num loop onde se ainda não completou o **limit** então chama a siguiente pagina e coleta os itens e o novo link da página siguiente. O loop fecha quando terminar de coletar o **limit** ou se não houver mais páginas para coletar.
 
-2. A segunda solução seria requisitar várias páginas em paralelo atè chegar ao número **limit** desejado, mas teria que chama pa gagina siguiente se ainda nõa completou o **limit**.
+2. A segunda solução seria requisitar várias páginas em paralelo atè chegar ao número **limit** desejado, mas teria que chama página siguiente se ainda não completou o  valor **limit**.
 
 3. Uma outra solução seria combinar as duas soluções anteriores.
 
