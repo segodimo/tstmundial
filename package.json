@@ -20,7 +20,7 @@
     "env": "0.0.2",
     "express": "^4.17.1",
     "interval-promise": "^1.4.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
