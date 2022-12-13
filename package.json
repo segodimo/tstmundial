@@ -18,7 +18,7 @@
     "consign": "^0.1.6",
     "dotenv": "^8.2.0",
     "env": "0.0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "interval-promise": "^1.4.0",
     "lodash": "^4.17.19",
     "morgan": "^1.10.0",
